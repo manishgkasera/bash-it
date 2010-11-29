@@ -1,16 +1,19 @@
 #!/bin/bash
+SCM_THEME_PROMPT_DIRTY=" ${red}✗"
+SCM_THEME_PROMPT_CLEAN=" ${bold_green}✓"
+SCM_THEME_PROMPT_PREFIX=" |"
+SCM_THEME_PROMPT_SUFFIX="${green}|"
 
-# prompt themeing
-PROMPT="${bold_blue}\$(prompt_char)\$(git_prompt_info) ${orange}\h ${reset_color}in ${green}\w ${reset_color}→ "
+
+PROMPT="\[${bold_blue}\]\[\$(scm_char)\]\[${green}\]\[\$(scm_prompt_info)\]\[${blue}\]\[\$(rvm_version_prompt)\] \[${orange}\]\h \[${reset_color}\]in \[${green}\]\w \[${reset_color}\]\[\n\[${green}\]→\[${reset_color}\] "
 
 
-# git themeing
-# GIT_THEME_PROMPT_DIRTY=" ${red}✗"
-# GIT_THEME_PROMPT_CLEAN=" ${bold_green}✓"
-# GIT_THEME_PROMPT_PREFIX=" ${green}|"
-# GIT_THEME_PROMPT_SUFFIX="${green}|"
+# git theming
+GIT_THEME_PROMPT_DIRTY=" ${red}✗"
+GIT_THEME_PROMPT_CLEAN=" ${bold_green}✓"
+GIT_THEME_PROMPT_PREFIX=" ${green}|"
+GIT_THEME_PROMPT_SUFFIX="${green}|"
 
-GIT_THEME_PROMPT_DIRTY=" ✗"
-GIT_THEME_PROMPT_CLEAN=" ✓"
-GIT_THEME_PROMPT_PREFIX=" |"
-GIT_THEME_PROMPT_SUFFIX="|"
+RVM_THEME_PROMPT_PREFIX=" |"
+RVM_THEME_PROMPT_SUFFIX="|"
+
