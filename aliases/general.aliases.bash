@@ -4,7 +4,7 @@
 alias sl=ls
 alias ls='ls -G'        # Compact view, show colors
 alias la='ls -AF'       # Compact view, show hidden
-alias ll='ls -al'
+alias ll='ls -alh'
 alias l='ls -a'
 alias l1='ls -1'
 
@@ -27,9 +27,10 @@ alias irc="$IRC_CLIENT"
 
 alias piano="pianobar"
 
-alias ..='cd ..'        # Go up one directory
-alias ...='cd ../..'    # Go up two directories
-alias -- -="cd -"       # Go back
+alias ..='cd ..'         # Go up one directory
+alias ...='cd ../..'     # Go up two directories
+alias ....='cd ../../..' # Go up three directories
+alias -- -="cd -"        # Go back
 
 # Shell History
 alias h='history'
@@ -41,6 +42,7 @@ alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias	md='mkdir -p'
 alias	rd=rmdir
 alias d='dirs -v'
+alias pd='pushd'
 
 function aliases-help() {
   echo "Generic Alias Usage"
@@ -53,6 +55,7 @@ function aliases-help() {
   echo "  c/k    = clear"
   echo "  ..     = cd .."
   echo "  ...    = cd ../.."
+  echo "  ...    = cd ../../.."
   echo "  -      = cd -"
   echo "  h      = history"
   echo "  md     = mkdir -p"
