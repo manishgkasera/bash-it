@@ -6,14 +6,26 @@ function ips {
   ifconfig | grep "inet " | awk '{ print $2 }'
 }
 
+function down4me() {
+  curl -s "http://www.downforeveryoneorjustme.com/$1" | sed '/just you/!d;s/<[^>]*>//g'
+}
+
 function myip {
   res=$(curl -s checkip.dyndns.org | grep -Eo '[0-9\.]+')
   echo "Your public IP is: ${bold_green} $res ${normal}"
 }
 
-function mkcd(){
-	mkdir -p "$*"
-	cd "$*"
+# Make a directory and immediately 'cd' into it
+
+function mkcd() {
+  mkdir -p "$*"
+  cd "$*"
+}
+
+# Search through directory contents with grep
+
+function lsgrep(){
+  ls | grep "$*"
 }
 
 # View man documentation in Preview
@@ -69,6 +81,11 @@ function t() {
 	 fi
 }
 
+# Checks for existence of a command
+command_exists () {
+    type "$1" &> /dev/null ;
+}
+
 # List all plugins and functions defined by bash-it
 function plugins-help() {
     
@@ -87,4 +104,10 @@ function plugins-help() {
     | grep -v "COMPREPLY=()" | sed -e "s/()//"
 }
 
-
+# back up file with timestamp
+# useful for administrators and configs
+buf () {
+    filename=$1
+    filetime=$(date +%Y%m%d_%H%M%S)
+    cp ${filename} ${filename}_${filetime}
+}

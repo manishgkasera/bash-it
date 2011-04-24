@@ -1,5 +1,6 @@
 #!/bin/bash
 
+THEME_PROMPT_HOST='\H'
 SCM_THEME_PROMPT_DIRTY=' ✗'
 SCM_THEME_PROMPT_CLEAN=' ✓'
 SCM_THEME_PROMPT_PREFIX=' |'
@@ -21,6 +22,7 @@ RVM_THEME_PROMPT_SUFFIX='|'
 
 function scm {
   if [[ -d .git ]]; then SCM=$GIT
+  elif [[ -n "$(git symbolic-ref HEAD 2> /dev/null)" ]]; then SCM=$GIT
   elif [[ -d .hg ]]; then SCM=$HG
   elif [[ -d .svn ]]; then SCM=$SVN
   else SCM='NONE'

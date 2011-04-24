@@ -8,6 +8,8 @@ alias ll='ls -alh'
 alias l='ls -a'
 alias l1='ls -1'
 
+alias _="sudo"
+
 if [ $(uname) = "Linux" ]
 then
 	alias ls="ls --color=always"
@@ -22,6 +24,8 @@ alias page="$PAGER"
 alias q="exit"
 
 alias irc="$IRC_CLIENT"
+
+alias rb="ruby"
 
 # Pianobar can be found here: http://github.com/PromyLOPh/pianobar/
 
@@ -60,7 +64,6 @@ function aliases-help() {
   echo "  h      = history"
   echo "  md     = mkdir -p"
   echo "  rd     = rmdir"
-  echo "  d      = dirs -v"
   echo "  editor = $EDITOR"
   echo "  pager  = $PAGER"
   echo "  piano  = pianobar"

@@ -1,5 +1,31 @@
 #!/bin/bash
 
+editpost() {
+	builtin cd "$JEKYLL_LOCAL_ROOT/_posts"
+
+	COUNTER=1
+	NUMBER="$RANDOM"
+	TMPFILE="/tmp/editpost-$NUMBER"
+
+	for POST in *
+	do
+		DATE=`echo $POST | grep -oE "[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}"`
+		TITLE=`cat $POST | grep -oE "title: (.+)"`
+		TITLE=`echo $TITLE | sed 's/title: //'`
+		echo "$COUNTER) 	$DATE	$TITLE" >> "$TMPFILE"	
+		POSTS[$COUNTER]=$POST
+		COUNTER=`expr $COUNTER + 1`
+	done
+	less $TMPFILE	
+	read -p "Number of post to edit: " POST_TO_EDIT
+	if [ -z "$EDITOR" ]
+	then
+		nano "${POSTS[$POST_TO_EDIT]}"
+	else
+		"$EDITOR" "${POSTS[$POST_TO_EDIT]}"
+	fi
+}
+
 newpost() {
 
 	# 'builtin cd' into the local jekyll root
@@ -79,7 +105,7 @@ newpost() {
 	# Now we have to get the date, again. But this time for in the header (YAML Front Matter) of
 	# the file
 
-	YAML_DATE=$(date "+%B %d %X")
+	YAML_DATE=$(date "+%B %d %Y %X")
 
 	# Echo the YAML Formatted date to the post file
 
@@ -178,5 +204,5 @@ newpost() {
 
 	# Open the file in your favorite editor
 
-	$EDITOR $FNAME
+	"$EDITOR" $FNAME
 }
