@@ -29,9 +29,9 @@ alias gll='git log --graph --pretty=oneline --abbrev-commit'
 
 case $OSTYPE in
   linux*)
-    alias gd='git diff | vim -R -'
+    alias gd='git diff'
     ;;
-  darwin*)
+  DARWIN*)
     alias gd='git diff | mate'
     ;;
   darwin*)
