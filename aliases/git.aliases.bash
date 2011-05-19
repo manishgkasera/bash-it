@@ -25,7 +25,7 @@ alias gco='git checkout'
 alias gexport='git archive --format zip --output'
 alias gdel='git branch -D'
 alias gmu='git fetch origin -v; git fetch upstream -v; git merge upstream/master'
-alias gll='git log --graph --pretty=oneline --abbrev-commit'
+alias glg='git log --graph --pretty=oneline --abbrev-commit'
 
 case $OSTYPE in
   linux*)
