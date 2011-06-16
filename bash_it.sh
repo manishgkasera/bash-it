@@ -25,6 +25,11 @@ do
 done
 
 # Plugins
+if [ ! -d "${BASH}/plugins/enabled" ]
+then
+  mkdir "${BASH}/plugins/enabled"
+  ln -s ${BASH}/plugins/available/* "${BASH}/plugins/enabled"
+fi
 PLUGINS="${BASH}/plugins/enabled/*.bash"
 for config_file in $PLUGINS
 do
@@ -32,11 +37,18 @@ do
 done
 
 # Aliases
-FUNCTIONS="${BASH}/aliases/*.bash"
+if [ ! -d "${BASH}/aliases/enabled" ]
+then
+  mkdir "${BASH}/aliases/enabled"
+  ln -s ${BASH}/aliases/available/* "${BASH}/aliases/enabled"
+fi
+FUNCTIONS="${BASH}/aliases/enabled/*.bash"
 for config_file in $FUNCTIONS
 do
   source $config_file
 done
+
+source "${BASH}/aliases/custom.aliases.bash"
 
 # Custom
 CUSTOM="${BASH}/custom/*.bash"
@@ -68,6 +80,7 @@ function bash-it() {
   echo "  rails-help                  This will list out all the aliases you can use with rails."
   echo "  git-help                    This will list out all the aliases you can use with git."
   echo "  todo-help                   This will list out all the aliases you can use with todo.txt-cli"
+  echo "  brew-help                   This will list out all the aliases you can use with Homebrew"
   echo "  aliases-help                Generic list of aliases."
   echo "  plugins-help                This will list out all the plugins and functions you can use with bash-it"
   echo
