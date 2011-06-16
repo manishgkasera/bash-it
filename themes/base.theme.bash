@@ -51,6 +51,14 @@ function prompt_char {
     echo -e "$char"
 }
 
+function hg_prompt_info {
+    hg prompt --angle-brackets "\
+< on <branch>>\
+< at <tags|, >>\
+<status|modified|unknown><update><
+patches: <patches|join( → )>>" 2>/dev/null
+}
+
 function git_prompt_info {
   if [[ -n $(git status -s 2> /dev/null |grep -v ^# |grep -v "working directory clean") ]]; then
       state=${GIT_THEME_PROMPT_DIRTY:-$SCM_THEME_PROMPT_DIRTY}
