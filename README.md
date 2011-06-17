@@ -8,7 +8,7 @@ Includes some autocompletion tools, theming support, aliases, custom functions, 
 
 Check a clone of this repo. You can view what a sample `~/.bash_profile` looks like in `template/bash_profile.template.bash`. If you wanted to use that template, make sure to make a backup of your current `~/.bash_profile` file.
 
-	git clone http://github.com/revans/bash-it.git bash_it
+	git clone http://github.com/manishgkasera/bash-it.git bash_it
 
 	cp ~/.bash_profile ~/.bash_profile_original
 	cp <path/to/cloned/repo>/template/bash_profile.template.bash ~/.bash_profile
