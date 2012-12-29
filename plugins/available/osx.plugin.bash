@@ -1,6 +1,10 @@
-#!/bin/bash
+cite about-plugin
+about-plugin 'osx-specific functions'
 
 function tab() {
+  about 'opens a new terminal tab'
+  group 'osx'
+
   osascript 2>/dev/null <<EOF
     tell application "System Events"
       tell process "Terminal" to keystroke "t" using command down
@@ -15,9 +19,13 @@ EOF
 # this one switches your os x dock between 2d and 3d
 # thanks to savier.zwetschge.org
 function dock-switch() {
+    about 'switch dock between 2d and 3d'
+    param '1: "2d" or "3d"'
+    example '$ dock-switch 2d'
+    group 'osx'
 
     if [ $(uname) = "Darwin" ]; then
-        
+
         if [ $1 = 3d ] ; then
             defaults write com.apple.dock no-glass -boolean NO
             killall Dock
@@ -28,10 +36,25 @@ function dock-switch() {
 
         else
             echo "usage:"
-            echo "dock-switch 2d" 
+            echo "dock-switch 2d"
             echo "dock-switch 3d."
         fi
     else
-        echo "sorry. you're currently not using os x"
+        echo "Sorry, this only works on Mac OS X"
     fi
+}
+
+# Download a file and open it in Preview
+
+function prevcurl() {
+  about 'download a file and open it in Preview'
+  param '1: url'
+  group 'osx'
+
+  if [ ! $(uname) = "Darwin" ]
+  then
+    echo "This function only works with Mac OS X"
+    return 1
+  fi
+  curl "$*" | open -fa "Preview"
 }

@@ -1,11 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # n0qorg theme by Florian Baumann <flo@noqqe.de>
 
 ## look-a-like
 # host directory (branch*)»
 # for example:
 # ananas ~/Code/bash-it/themes (master*)»
-PROMPT="${bold_blue}\[\$(hostname)\]${normal} \w${normal} ${bold_white}\[\$(git_prompt_info)\]${normal}» "
+function prompt_command() {
+    PS1="${bold_blue}[$(hostname)]${normal} \w${normal} ${bold_white}[$(git_prompt_info)]${normal}» "
+}
+
+PROMPT_COMMAND=prompt_command;
 
 ## git-theme
 # feel free to change git chars.

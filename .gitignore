@@ -1,10 +1,10 @@
-aliases/enabled
-plugins/enabled
+*/enabled/*
 .DS_Store
-custom/*.bash
+custom/*
 !custom/example.bash
 .rvmrc
 aliases/custom.aliases.bash
 lib/custom.bash
 plugins/custom.plugins.bash
 *.swp
+.*.un~
