@@ -1,56 +1,92 @@
-SCM_THEME_PROMPT_PREFIX="("
-SCM_THEME_PROMPT_SUFFIX=")"
+#!/usr/bin/env bash
+GIT_PS1_SHOWCOLORHINTS=true
+GIT_PS1_SHOWDIRTYSTATE=true
+GIT_PS1_SHOWSTASHSTATE=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
+GIT_PS1_SHOWUPSTREAM="verbose"
 
-SCM_THEME_PROMPT_DIRTY=' ${bold_red}✗${normal}'
-SCM_THEME_PROMPT_CLEAN=' ${bold_green}✓${normal}'
-SCM_GIT_CHAR='${bold_green}±${normal}'
-SCM_SVN_CHAR='${bold_cyan}⑆${normal}'
-SCM_HG_CHAR='${bold_red}☿${normal}'
+RVM_THEME_PROMPT_PREFIX="${white}[${bold_green}"
+RVM_THEME_PROMPT_SUFFIX="${white}]"
+SCM_THEME_PROMPT_PREFIX="${white}("
+SCM_THEME_PROMPT_SUFFIX="$white)"
+
+#Mysql Prompt
+export MYSQL_PS1="(\u@\h) [\d]> "
 
 case $TERM in
-	xterm*)
-	TITLEBAR="\[\033]0;\w\007\]"
-	;;
-	*)
-	TITLEBAR=""
-	;;
+        xterm*)
+        TITLEBAR="\[\033]0;\w\007\]"
+        ;;
+        *)
+        TITLEBAR=""
+        ;;
 esac
 
-PS3=">> "
+function ip {
+  if [ "$(ips | wc -l)" -ne 1 ]; then
+    echo -e "$(ips | sed -e :a -e '$!N;s/\n/, /;ta' | sed -e 's/127\.0\.0\.1\, //g' | sed -e 's/addr://g')"
+  fi
+}
 
-is_vim_shell() {
-	if [ ! -z "$VIMRUNTIME" ]
-	then
-		echo "[${cyan}vim shell${normal}]"
+function battery_per {
+  local p=$(battery_percentage)
+  if [ $p -lt 30 ]; then
+    local color=${bold_red}
+  fi
+  echo -e "$RVM_THEME_PROMPT_PREFIX$color$p%$RVM_THEME_PROMPT_SUFFIX"
+}
+
+function git_file_count {
+  local st=$(git status --porcelain 2> /dev/null)
+  local afiles=$(grep '^A' <<< "$st" | wc -l)
+  local smfiles=$(grep -E '^MM? ' <<< "$st" | wc -l)
+  local mfiles=$(grep '^.M ' <<< "$st" | wc -l)
+  local cfiles=$(grep '^ C ' <<< "$st" | wc -l)
+  local rfiles=$(grep '^R ' <<< "$st" | wc -l)
+  local sdfiles=$(grep '^D ' <<< "$st" | wc -l)
+  local dfiles=$(grep '^ D ' <<< "$st" | wc -l)
+  local ufiles=$(grep '^\?? ' <<< "$st" | wc -l)
+  if [ $afiles -gt 0 ]; then
+    FILE_COUNTS="${bold_green}A:$afiles "
+  fi
+  if [ $smfiles -gt 0 ]; then
+    FILE_COUNTS="$FILE_COUNTS${bold_green}M:$smfiles "
+  fi
+  if [ $mfiles -gt 0 ]; then
+    FILE_COUNTS="$FILE_COUNTS${bold_red}M:$mfiles "
+  fi
+  if [ $cfiles -gt 0 ]; then
+    FILE_COUNTS="$FILE_COUNTS${bold_green}C:$cfiles "
+  fi
+  if [ $rfiles -gt 0 ]; then
+    FILE_COUNTS="$FILE_COUNTS${bold_green}R:$rfiles "
+  fi
+  if [ $sdfiles -gt 0 ]; then
+    FILE_COUNTS="$FILE_COUNTS${bold_green}D:$sdfiles "
+  fi
+  if [ $dfiles -gt 0 ]; then
+    FILE_COUNTS="$FILE_COUNTS${bold_red}D:$dfiles "
+  fi
+  if [ $ufiles -gt 0 ]; then
+    FILE_COUNTS="$FILE_COUNTS${red}U:$ufiles"
+  fi
+}
+
+function scm_prompt_info_plus {
+	if [ -n "$(__gitdir)" ]; then
+    git_file_count
+    git_prompt_vars
+    echo -e "$SCM_THEME_PROMPT_PREFIX${bold_green}$(__git_ps1 '%s' | sed -e 's/ / $(echo -e $echo_bold_red)/')$SCM_THEME_PROMPT_SUFFIX $FILE_COUNTS"
+  else
+    scm_prompt_info
 	fi
 }
 
-modern_scm_prompt() {
-	CHAR=$(scm_char)
-	if [ $CHAR = $SCM_NONE_CHAR ]
-	then
-		return
-	else
-		echo "[$(scm_char)][$(scm_prompt_info)]"
-	fi
+function prompt() {
+  PS1=" $(battery_per)$(ruby_version_prompt) ${bold_blue}\w${normal}$(scm_prompt_info_plus)\n\
+ ${bold_yellow}$(ip) ${bold_purple}$(scm_char)${reset_color} » "
+  PS2='> '
+  PS4='+ '
 }
-
-prompt() {
-	if [ $? -ne 0 ]
-	then
-		# Yes, the indenting on these is weird, but it has to be like
-		# this otherwise it won't display properly.
-
-		PS1="${TITLEBAR}${bold_red}┌─[${cyan}$(t | wc -l | sed -e's/ *//')${reset_color}]${reset_color}$(modern_scm_prompt)[${cyan}\W${normal}]$(is_vim_shell)
-${bold_red}└─▪${normal} "
-	else
-		PS1="${TITLEBAR}┌─ ${green}\w${bold_blue}$(scm_prompt_info)${normal}$(is_vim_shell)
-└─▪ "
-	fi
-}
-
-PS2="└─▪ "
-
-
 
 PROMPT_COMMAND=prompt
